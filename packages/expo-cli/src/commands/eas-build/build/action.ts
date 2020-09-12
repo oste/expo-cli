@@ -11,21 +11,21 @@ import { v4 as uuidv4 } from 'uuid';
 import { CredentialsSource, EasJsonReader } from '../../../easJson';
 import log from '../../../log';
 import { ensureProjectExistsAsync } from '../../../projects';
-import { UploadType, uploadAsync } from '../../../uploads';
+import { uploadAsync, UploadType } from '../../../uploads';
 import { createProgressTracker } from '../../utils/progress';
 import { platformDisplayNames } from '../constants';
 import {
   AnalyticsEvent,
   Build,
   BuildCommandPlatform,
-  BuildStatus,
   Builder,
+  BuildStatus,
   CommandContext,
 } from '../types';
 import Analytics from '../utils/analytics';
 import createBuilderContext from '../utils/createBuilderContext';
 import createCommandContextAsync from '../utils/createCommandContextAsync';
-import { isUpdatesConfigured } from '../utils/expoUpdates';
+import { isUpdatesConfiguredAsync } from '../utils/expoUpdates';
 import {
   ensureGitRepoExistsAsync,
   ensureGitStatusIsCleanAsync,
@@ -166,7 +166,7 @@ async function startBuildAsync<T extends Platform>(
     }
     if (!builder.ctx.commandCtx.skipProjectConfiguration) {
       try {
-        if (!(await isUpdatesConfigured(builder.ctx.commandCtx.projectDir))) {
+        if (!(await isUpdatesConfiguredAsync(builder.ctx.commandCtx.projectDir))) {
           throw new Error(
             '"expo-updates" is installed in the project, but the configuration is not up-to-date. Please run "expo eas:build:init" first to configure the project'
           );
